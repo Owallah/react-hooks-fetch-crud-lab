@@ -20,6 +20,23 @@ function QuestionForm(props) {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(formData);
+    fetch('http://localhost:3000/questions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        prompt: formData.prompt,
+        answers:[formData.answer1, formData.answer2, formData.answer3, formData.answer4],
+        correctIndex: formData.correctIndex
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      props.setQuestionsList([...props.questionsList, data])
+      setFormData({prompt:"",answer1:"",answer2:"",answer3:"", answer4:"",correctIndex:0})
+    })
   }
 
   return (
